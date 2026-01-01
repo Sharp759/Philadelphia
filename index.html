@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philadelphia Council Districts Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <!-- Floating Toggle Button (visible when sidebar is closed) -->
+     <button class="floating-toggle-btn" id="floating-toggle">
+        <i class="fas fa-bars"></i>
+     </button>
+
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">
+                <img src="Telo.png" alt="Telo Logo">
+            </div>
+
+            <button class="toggle-btn" id="toggle-sidebar">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        </div>
+
+
+        <div class="import-section">
+            <div class="import-wrapper">
+                <input type="file" id="file-input" accept=".xlsx, .xls" class="import-btn">
+                <label for="file-input" class="import-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span class="import-text">Import Data</span>
+                    <span class="import-status"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="menu-items">
+            <div class="menu-item" data-section="analytical">
+                <div class="menu-item-content">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Analytical Indicators</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-analytical" class="toggle-input" checked>
+                    <label for="toggle-analytical" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="menu-item" data-section="capital">
+                <div class="menu-item-content">
+                    <i class="fas fa-building"></i>
+                    <span>Capital Investments</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-capital" class="toggle-input" checked>
+                    <label for="toggle-capital" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="menu-item" data-section="demographics">
+                <div class="menu-item-content">
+                    <i class="fas fa-users"></i>
+                    <span>District Demographics</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-demographics" class="toggle-input" checked>
+                    <label for="toggle-demographics" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="menu-item" data-section="economic">
+                <div class="menu-item-content">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Economic Context</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-economic" class="toggle-input" checked>
+                    <label for="toggle-economic" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="menu-item" data-section="amenities">
+                <div class="menu-item-content">
+                    <i class="fas fa-parking"></i>
+                    <span>Public Amenities</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-amenities" class="toggle-input" checked>
+                    <label for="toggle-amenities" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="menu-item" data-section="facilities">
+                <div class="menu-item-content">
+                    <i class="fas fa-school"></i>
+                    <span>School Facilities</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-facilities" class="toggle-input" checked>
+                    <label for="toggle-facilities" class="toggle-label"></label>
+                </div>
+            </div>
+            <div class="menu-item" data-section="status">
+                <div class="menu-item-content">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>School Status</span>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="toggle-status" class="toggle-input" checked>
+                    <label for="toggle-status" class="toggle-label"></label>
+                </div>
+            </div>
+        </div>
+        <!-- Add this in the sidebar, before the basemap-section -->
+        <div class="action-buttons">
+            <button class="action-btn insights-btn" id="insights-btn">
+                <i class="fas fa-chart-line"></i>
+                <span>Insights</span>
+            </button>
+            <button class="action-btn reset-btn" id="reset-btn">
+                <i class="fas fa-redo"></i>
+                <span>Reset</span>
+            </button>
+        </div>
+
+        
+        <div class="basemap-section">
+            <h3>Base Map</h3>
+            <div class="basemap-selector">
+                <div class="basemap-option active" data-basemap="light">
+                    <i class="fas fa-sun"></i>
+                    <span>Light</span>
+                </div>
+                <div class="basemap-option" data-basemap="dark">
+                    <i class="fas fa-moon"></i>
+                    <span>Dark</span>
+                </div>
+                <div class="basemap-option" data-basemap="satellite">
+                    <i class="fas fa-satellite"></i>
+                    <span>Satellite</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map-container">
+        <div id="map"></div>
+        
+        <!-- Status Message -->
+        <div id="status-message" style="display: none;"></div>
+    </div>
+    <!-- Right Sidebar for Details (Initially hidden) -->
+     <div id="details-sidebar" class="details-sidebar">
+        <div class="details-header">
+            <h2><i class="fas fa-info-circle"></i> Details</h2>
+             <button class="details-close-btn" id="close-details">
+                <i class="fas fa-times"></i>
+             </button>
+        </div>
+        <div class="details-content" id="details-content">
+            <!-- Content will be dynamically inserted here -->
+             <div class="details-placeholder">
+                <i class="fas fa-mouse-pointer"></i>
+                <h3>Select a District or School</h3>
+                <p>Click on any district shape or school icon on the map to view detailed information here.</p>
+             </div>
+        </div>
+     </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,2235 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+
+/* Sidebar Styles */
+#sidebar {
+    width: 18%;
+    min-width: 280px;
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+#sidebar.collapsed {
+    margin-left: -18%;
+    min-width: 0;
+}
+
+.sidebar-header {
+    padding: 25px 20px;
+    background-color: #1a252f;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #34495e;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ecf0f1;
+}
+
+/* ============================================
+   ENHANCED 3D TOGGLE SWITCHES
+   ============================================ */
+
+.toggle-switch {
+    position: relative;
+    width: 52px;
+    height: 26px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.toggle-input {
+    display: none;
+}
+
+.toggle-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+    border-radius: 13px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    
+    /* 3D effect - inset shadow for depth */
+    box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.05),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Toggle knob */
+.toggle-label:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #e0e0e0, #ffffff);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    
+    /* 3D knob effect */
+    box-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.5),
+        -1px -1px 2px rgba(255, 255, 255, 0.2),
+        inset 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* Toggle ON state - Green 3D effect */
+.toggle-input:checked + .toggle-label {
+    background: linear-gradient(145deg, #2a5a2a, #1a4a1a);
+    box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 4px rgba(46, 204, 113, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.toggle-input:checked + .toggle-label:after {
+    left: 28px;
+    background: linear-gradient(145deg, #7bff7b, #4bc0c0);
+    
+    /* Enhanced 3D effect for active knob */
+    box-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.5),
+        -1px -1px 2px rgba(123, 255, 123, 0.3),
+        inset 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Hover effects */
+.toggle-label:hover {
+    transform: translateY(-1px);
+    box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 4px rgba(255, 255, 255, 0.08),
+        0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-label:hover:after {
+    box-shadow: 
+        2px 2px 5px rgba(0, 0, 0, 0.6),
+        -1px -1px 3px rgba(255, 255, 255, 0.25),
+        inset 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+.toggle-input:checked + .toggle-label:hover {
+    box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.6),
+        inset -2px -2px 4px rgba(46, 204, 113, 0.25),
+        0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.toggle-input:checked + .toggle-label:hover:after {
+    box-shadow: 
+        2px 2px 5px rgba(0, 0, 0, 0.6),
+        -1px -1px 3px rgba(123, 255, 123, 0.4),
+        inset 0 0 4px rgba(255, 255, 255, 0.4);
+}
+
+/* Active/click effect */
+.toggle-input:active + .toggle-label,
+.toggle-label:active {
+    transform: translateY(1px);
+    box-shadow: 
+        inset 3px 3px 6px rgba(0, 0, 0, 0.7),
+        inset -3px -3px 6px rgba(255, 255, 255, 0.03),
+        0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-input:checked:active + .toggle-label {
+    box-shadow: 
+        inset 3px 3px 6px rgba(0, 0, 0, 0.7),
+        inset -3px -3px 6px rgba(46, 204, 113, 0.15),
+        0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-input:active + .toggle-label:after,
+.toggle-label:active:after {
+    width: 20px;
+    margin-left: -1px;
+    box-shadow: 
+        1px 1px 3px rgba(0, 0, 0, 0.4),
+        -1px -1px 2px rgba(255, 255, 255, 0.15),
+        inset 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+/* Animation for toggle */
+@keyframes toggleBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.toggle-input:checked + .toggle-label:after {
+    animation: toggleBounce 0.3s ease;
+}
+
+/* Different colors for different sections on hover */
+.menu-item[data-section="analytical"]:hover .toggle-label {
+    border-color: rgba(75, 192, 192, 0.3);
+}
+
+.menu-item[data-section="capital"]:hover .toggle-label {
+    border-color: rgba(153, 102, 255, 0.3);
+}
+
+.menu-item[data-section="demographics"]:hover .toggle-label {
+    border-color: rgba(255, 159, 64, 0.3);
+}
+
+.menu-item[data-section="economic"]:hover .toggle-label {
+    border-color: rgba(54, 162, 235, 0.3);
+}
+
+.menu-item[data-section="amenities"]:hover .toggle-label {
+    border-color: rgba(255, 99, 132, 0.3);
+}
+
+.menu-item[data-section="facilities"]:hover .toggle-label {
+    border-color: rgba(75, 192, 192, 0.3);
+}
+
+.menu-item[data-section="status"]:hover .toggle-label {
+    border-color: rgba(123, 255, 123, 0.3);
+}
+/* Main button styling matching insights page */
+.menu-item {
+    padding: 0 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    border-left: none;
+    margin: 8px 0;
+    border-radius: 16px;
+    height: 60px;
+    min-height: 60px;
+    
+    /* 3D Effect matching insights page */
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.8),
+        -5px -5px 15px rgba(80, 80, 80, 0.2),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.05),
+        inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+    
+    border: none;
+    position: relative;
+    z-index: 1;
+}
+
+.menu-item:hover {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    transform: translateY(-4px);
+    
+    /* Enhanced 3D effect on hover */
+    box-shadow: 
+        8px 8px 20px rgba(0, 0, 0, 0.9),
+        -8px -8px 20px rgba(80, 80, 80, 0.3),
+        inset 3px 3px 8px rgba(255, 255, 255, 0.1),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.6);
+}
+
+
+.menu-item.active {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    border-left: none;
+    font-weight: 600;
+}
+
+.menu-item-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+/* Button content container */
+.menu-item-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding-left: 15px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+/* Icon styling matching insights page */
+.menu-item-content i {
+    margin-right: 12px;
+    font-size: 1.2em;
+    width: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.menu-item:hover .menu-item-content i {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px currentColor;
+}
+/* Specific icon colors matching insights page */
+.menu-item[data-section="analytical"] i {
+    color: #4bc0c0;
+}
+.menu-item[data-section="capital"] i {
+    color: #9966ff;
+}
+.menu-item[data-section="demographics"] i {
+    color: #ff9f40;
+}
+.menu-item[data-section="economic"] i {
+    color: #36a2eb;
+}
+.menu-item[data-section="amenities"] i {
+    color: #ff6384;
+}
+.menu-item[data-section="facilities"] i {
+    color: #4bc0c0; /* or match to insights school icon color */
+}
+.menu-item[data-section="status"] i {
+    color: #7bff7b; /* or match to insights status icon color */
+}
+
+.menu-item:hover .menu-item-content {
+    color: #4bc0c0;
+}
+
+.menu-item.active .menu-item-content {
+    color: #4bc0c0;
+}
+
+
+
+/* Toggle switch styling - Update to match insights design */
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    margin-right: 15px;
+}
+
+
+.toggle-input {
+    display: none;
+}
+
+.toggle-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 24px;
+    background-color: #7f8c8d;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    
+    /* Add 3D effect to match buttons */
+    box-shadow: 
+        2px 2px 5px rgba(0, 0, 0, 0.5),
+        -2px -2px 5px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.toggle-label:after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #fff, #e0e0e0);
+    transition: all 0.3s;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: #2ecc71;
+    box-shadow: 
+        2px 2px 5px rgba(0, 0, 0, 0.5),
+        -2px -2px 5px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.1);
+}
+
+.toggle-input:checked + .toggle-label:after {
+    left: 28px;
+    background: linear-gradient(145deg, #fff, #e0e0e0);
+}
+
+/* Import button styling to match insights page */
+.import-section {
+    padding: 8px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+}
+
+.import-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    color: white;
+    border: 2px solid rgba(75, 192, 192, 0.3);
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    
+    /* 3D effect matching insights import button */
+    box-shadow: 
+        4px 4px 12px rgba(0, 0, 0, 0.7),
+        -4px -4px 12px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 4px rgba(255, 255, 255, 0.05);
+}
+
+.import-btn:hover {
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    border-color: rgba(75, 192, 192, 0.6);
+    
+    box-shadow: 
+        6px 6px 16px rgba(0, 0, 0, 0.8),
+        -6px -6px 16px rgba(80, 80, 80, 0.3),
+        inset 2px 2px 6px rgba(255, 255, 255, 0.1);
+}
+
+.import-btn.wrong-data {
+    background: linear-gradient(145deg, #4a2a2a, #3a1a1a);
+    border-color: rgba(220, 53, 69, 0.6);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { 
+        transform: scale(1); 
+        box-shadow: 
+            4px 4px 12px rgba(0, 0, 0, 0.7),
+            -4px -4px 12px rgba(80, 80, 80, 0.2),
+            inset 1px 1px 4px rgba(255, 255, 255, 0.05);
+    }
+    50% { 
+        transform: scale(1.02); 
+        box-shadow: 
+            6px 6px 16px rgba(220, 53, 69, 0.3),
+            -6px -6px 16px rgba(80, 80, 80, 0.3),
+            inset 2px 2px 6px rgba(255, 255, 255, 0.1);
+    }
+    100% { 
+        transform: scale(1); 
+        box-shadow: 
+            4px 4px 12px rgba(0, 0, 0, 0.7),
+            -4px -4px 12px rgba(80, 80, 80, 0.2),
+            inset 1px 1px 4px rgba(255, 255, 255, 0.05);
+    }
+}
+
+
+.import-btn i {
+    margin-right: 8px;
+    color: #4bc0c0;
+    transition: all 0.3s ease;
+}
+
+.import-btn:hover i {
+    color: #7bff7b;
+    text-shadow: 0 0 10px rgba(123, 255, 123, 0.5);
+}
+
+.import-btn.wrong-data i {
+    color: #ff7b7b;
+}
+.import-note {
+    color: #bdc3c7;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Base map selector styling to match insights */
+.basemap-section {
+    padding: 20px;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.basemap-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #ecf0f1;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.basemap-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.basemap-option {
+    padding: 12px 15px;
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    
+    /* 3D effect */
+    box-shadow: 
+        3px 3px 10px rgba(0, 0, 0, 0.7),
+        -3px -3px 10px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.05);
+    
+    border: none;
+}
+.basemap-option:hover {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    transform: translateY(-2px);
+    
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.8),
+        -5px -5px 15px rgba(80, 80, 80, 0.3),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.08);
+}
+
+.basemap-option.active {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    font-weight: 600;
+    color: #3498db;
+    
+    box-shadow: 
+        3px 3px 10px rgba(0, 0, 0, 0.7),
+        -3px -3px 10px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 3px rgba(52, 152, 219, 0.3);
+}
+
+.basemap-option i {
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.basemap-option:hover i {
+    transform: scale(1.1);
+}
+
+.basemap-option.active i {
+    color: #3498db;
+    text-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+}
+/* Floating toggle button - Update to match insights style */
+.floating-toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    
+    /* 3D effect matching insights buttons */
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.8),
+        -5px -5px 15px rgba(80, 80, 80, 0.2),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.05);
+    
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.floating-toggle-btn:hover {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    color: #3498db;
+    transform: translateY(-2px);
+    
+    box-shadow: 
+        8px 8px 20px rgba(0, 0, 0, 0.9),
+        -8px -8px 20px rgba(80, 80, 80, 0.3),
+        inset 3px 3px 8px rgba(255, 255, 255, 0.1);
+}
+
+.floating-toggle-btn:active {
+    transform: translateY(0);
+    box-shadow: 
+        2px 2px 8px rgba(0, 0, 0, 0.7),
+        -2px -2px 8px rgba(80, 80, 80, 0.2),
+        inset 4px 4px 10px rgba(0, 0, 0, 0.6);
+}
+/* Update sidebar background to match insights dark theme */
+#sidebar {
+    width: 18%;
+    min-width: 280px;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    box-shadow: 10px 0 25px rgba(0, 0, 0, 0.6);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 25px 20px;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ecf0f1;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+}
+
+.toggle-btn {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    
+    /* 3D effect */
+    box-shadow: 
+        3px 3px 8px rgba(0, 0, 0, 0.7),
+        -3px -3px 8px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.05);
+}
+
+.toggle-btn:hover {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    color: #3498db;
+    
+    box-shadow: 
+        5px 5px 12px rgba(0, 0, 0, 0.8),
+        -5px -5px 12px rgba(80, 80, 80, 0.3),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.08);
+}
+
+/* Import note styling */
+.import-note {
+    color: #888;
+    font-size: 0.8rem;
+    margin-top: 10px;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Remove old hover styles that conflict */
+.menu-item:hover {
+    background-color: transparent; /* Remove old solid color */
+    border-left: none; /* Remove border-left effect */
+}
+
+.menu-item.active {
+    background-color: transparent; /* Remove old solid color */
+    border-left: none; /* Remove border-left effect */
+}
+
+/* Ensure map container matches dark theme */
+#map-container {
+    flex-grow: 1;
+    height: 100vh;
+    transition: margin-left 0.3s ease;
+    position: relative;
+    background-color: #121212;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+/* Map Container Styles */
+#map-container {
+    flex-grow: 1;
+    height: 100vh;
+    transition: width 0.3s ease;
+    position: relative;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Popup Window Styles */
+.data-popup {
+    max-width: 400px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.data-popup h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+}
+
+.data-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.data-section h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.data-section h4 i {
+    color: #3498db;
+}
+
+.data-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-section th {
+    background-color: #ecf0f1;
+    padding: 8px;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #bdc3c7;
+}
+
+.data-section td {
+    padding: 8px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.data-section tr:hover {
+    background-color: #f1f8ff;
+}
+
+.no-data {
+    color: #7f8c8d;
+    font-style: italic;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Status Message */
+#status-message {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 25px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease;
+}
+
+#status-message.success {
+    background-color: #2ecc71;
+}
+
+#status-message.error {
+    background-color: #e74c3c;
+}
+
+#status-message.info {
+    background-color: #3498db;
+}
+
+@keyframes slideUp {
+    from { bottom: -50px; opacity: 0; }
+    to { bottom: 20px; opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { bottom: 20px; opacity: 1; }
+    to { bottom: -50px; opacity: 0; }
+}
+
+/* File Input */
+#file-input {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    #sidebar {
+        width: 25%;
+        min-width: 250px;
+    }
+    
+    #sidebar.collapsed {
+        margin-left: -25%;
+    }
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position: absolute;
+        height: 100%;
+        width: 300px;
+    }
+    
+    #sidebar.collapsed {
+        margin-left: -300px;
+    }
+    
+    .data-popup {
+        max-width: 300px;
+        max-height: 400px;
+    }
+    
+    #status-message {
+        left: 20px;
+        right: 20px;
+        transform: none;
+        text-align: center;
+        justify-content: center;
+    }
+}
+/* Add to existing style.css */
+.school-section .schools-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.school-section .schools-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.school-section .schools-list li:last-child {
+    border-bottom: none;
+}
+
+.school-section .schools-list li strong {
+    margin-right: 10px;
+    color: #3498db;
+    min-width: 25px;
+}
+
+.location-message {
+    background-color: #e8f4fc;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border-left: 4px solid #3498db;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.location-message i {
+    color: #3498db;
+    font-size: 18px;
+    margin-top: 2px;
+}
+
+.location-message p {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 14px;
+    line-height: 1.4;
+}
+/* Add to existing style.css */
+.school-section .schools-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.school-section .schools-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+.school-section .schools-list li:last-child {
+    border-bottom: none;
+}
+
+.school-section .schools-list li strong {
+    margin-right: 10px;
+    color: #3498db;
+    min-width: 25px;
+}
+
+.school-count {
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    color: #2c3e50;
+}
+
+.location-message {
+    background-color: #e8f4fc;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border-left: 4px solid #3498db;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.location-message i {
+    color: #3498db;
+    font-size: 18px;
+    margin-top: 2px;
+}
+
+.location-message p {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* School marker styles */
+.school-icon, .school-icon-facilities, .school-icon-status {
+    background: transparent !important;
+    border: none !important;
+}
+
+.school-tooltip {
+    font-weight: 600;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid #3498db;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+
+/* School marker popup styles */
+.school-marker-popup .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    border: 2px solid #3498db;
+}
+
+.school-popup h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.school-popup h3 i {
+    color: #3498db;
+}
+
+.school-popup .school-info {
+    margin-bottom: 15px;
+}
+
+.school-popup h4 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.school-popup table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.school-popup td {
+    padding: 6px 4px;
+    border-bottom: 1px solid #eee;
+}
+
+.school-popup td:first-child {
+    width: 40%;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.school-popup td:last-child {
+    width: 60%;
+}
+
+.popup-footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    color: #7f8c8d;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.popup-footer i {
+    color: #e74c3c;
+}
+
+/* ============================================
+   MAP LEGEND STYLES (REPLACED OLD SCHOOL LEGEND)
+   ============================================ */
+
+.map-legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    border-radius: 12px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    width: 220px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.legend-header {
+    padding: 12px 15px;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.legend-header:hover {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+}
+
+.legend-header h4 {
+    margin: 0;
+    color: #ecf0f1;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-header h4 i {
+    color: #4bc0c0;
+}
+
+.legend-toggle {
+    background: transparent;
+    border: none;
+    color: #ecf0f1;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.legend-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #4bc0c0;
+}
+
+.legend-content {
+    padding: 15px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.legend-section {
+    margin-bottom: 15px;
+}
+
+.legend-section:last-child {
+    margin-bottom: 0;
+}
+
+.legend-section h5 {
+    margin: 0 0 10px 0;
+    color: #bdc3c7;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 6px 0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.legend-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    padding-left: 8px;
+}
+
+.legend-item:last-child {
+    margin-bottom: 0;
+}
+
+.legend-icon {
+    margin-right: 12px;
+    width: 24px;
+    text-align: center;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+}
+
+.legend-item span {
+    color: #ecf0f1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    flex: 1;
+}
+
+.legend-color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.legend-footer {
+    padding: 10px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.legend-footer small {
+    color: #95a5a6;
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+/* Scrollbar styling for legend */
+.legend-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.legend-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.legend-content::-webkit-scrollbar-thumb {
+    background: rgba(75, 192, 192, 0.5);
+    border-radius: 3px;
+}
+
+.legend-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(75, 192, 192, 0.7);
+}
+
+/* Year filter styles */
+.year-filter-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #9b59b6;
+}
+
+.year-filter-section h4 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.year-filter-section h4 i {
+    color: #9b59b6;
+}
+
+.year-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.year-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.year-filter-group label {
+    font-weight: 600;
+    color: #2c3e50;
+    min-width: 180px;
+}
+
+.year-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    color: #2c3e50;
+    font-size: 14px;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.year-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.filter-note {
+    color: #7f8c8d;
+    font-size: 12px;
+    margin: 10px 0 0 0;
+    text-align: center;
+}
+
+/* No data section styles */
+.no-data-section .no-data-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background-color: #fef5e7;
+    border-radius: 6px;
+    border-left: 4px solid #f39c12;
+}
+
+.no-data-section .no-data-message i {
+    color: #f39c12;
+    font-size: 20px;
+}
+
+.no-data-section .no-data-message p {
+    margin: 0;
+    color: #d35400;
+    font-weight: 500;
+}
+
+/* Add to existing CSS */
+
+/* Floating Toggle Button */
+.floating-toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1001;
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.floating-toggle-btn:hover {
+    background-color: #3498db;
+    transform: scale(1.1);
+}
+
+.floating-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Adjust map container to always be full width */
+#map-container {
+    flex-grow: 1;
+    height: 100vh;
+    transition: margin-left 0.3s ease;
+    position: relative;
+}
+
+/* When sidebar is collapsed, map takes full width */
+#map-container.full-width {
+    margin-left: 0;
+    width: 100%;
+}
+
+/* Update sidebar collapsed style */
+#sidebar.collapsed {
+    margin-left: -18%;
+    min-width: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    #sidebar {
+        width: 25%;
+        min-width: 250px;
+    }
+    
+    #sidebar.collapsed {
+        margin-left: -25%;
+    }
+    
+    .map-legend {
+        width: 200px;
+        bottom: 15px;
+        right: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        position: absolute;
+        height: 100%;
+        width: 300px;
+    }
+    
+    #sidebar.collapsed {
+        margin-left: -300px;
+    }
+    
+    .floating-toggle-btn {
+        display: flex;
+    }
+    
+    /* When sidebar is collapsed on mobile, show floating button */
+    #sidebar:not(.collapsed) ~ .floating-toggle-btn {
+        display: none;
+    }
+    
+    .map-legend {
+        width: 180px;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .legend-content {
+        padding: 10px;
+    }
+    
+    .legend-header h4 {
+        font-size: 0.9rem;
+    }
+    
+    .legend-item span {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .map-legend {
+        width: 160px;
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .legend-content {
+        padding: 8px;
+    }
+}
+
+/* Add animation for floating button */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.floating-toggle-btn {
+    animation: fadeIn 0.3s ease;
+}
+/* ============================================
+   RIGHT DETAILS SIDEBAR
+   ============================================ */
+
+.details-sidebar {
+    position: fixed;
+    top: 0;
+    right: -25%;
+    width: 25%;
+    min-width: 350px;
+    height: 100vh;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    color: white;
+    box-shadow: -10px 0 25px rgba(0, 0, 0, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 999;
+    transition: right 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.details-sidebar.open {
+    right: 0;
+}
+
+.details-header {
+    padding: 25px 20px;
+    background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.details-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ecf0f1;
+    text-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.details-header i {
+    color: #4bc0c0;
+}
+
+.details-close-btn {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    
+    /* 3D effect */
+    box-shadow: 
+        3px 3px 8px rgba(0, 0, 0, 0.7),
+        -3px -3px 8px rgba(80, 80, 80, 0.2),
+        inset 1px 1px 3px rgba(255, 255, 255, 0.05);
+}
+
+.details-close-btn:hover {
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    color: #ff7b7b;
+    
+    box-shadow: 
+        5px 5px 12px rgba(0, 0, 0, 0.8),
+        -5px -5px 12px rgba(80, 80, 80, 0.3),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.08);
+}
+
+.details-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Details placeholder */
+.details-placeholder {
+    text-align: center;
+    padding: 60px 20px;
+    color: #888;
+}
+
+.details-placeholder i {
+    font-size: 4em;
+    color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    display: block;
+}
+
+.details-placeholder h3 {
+    color: #aaa;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+}
+
+.details-placeholder p {
+    color: #777;
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* District details content */
+.district-details, .school-details {
+    color: #fff;
+}
+
+.details-title {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(75, 192, 192, 0.3);
+    color: #4bc0c0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.details-title i {
+    color: #4bc0c0;
+}
+
+/* Data sections in details sidebar */
+.details-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #3498db;
+}
+
+.details-section h4 {
+    color: #fff;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1em;
+}
+
+.details-section h4 i {
+    color: #3498db;
+    font-size: 1.2em;
+}
+
+.details-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.details-section th {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+    color: #4bc0c0;
+    border-bottom: 2px solid rgba(75, 192, 192, 0.3);
+}
+
+.details-section td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.details-section tr:hover {
+    background-color: rgba(75, 192, 192, 0.1);
+}
+
+/* Year filter section in details */
+.year-filter-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(155, 89, 182, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #9b59b6;
+}
+
+.year-filter-section h4 {
+    color: #fff;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.year-filter-section h4 i {
+    color: #9b59b6;
+}
+
+.year-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.year-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.year-filter-group label {
+    font-weight: 600;
+    color: #ddd;
+    min-width: 180px;
+}
+
+.year-select {
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 14px;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.year-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.year-select option {
+    background: #2a2a2a;
+    color: #fff;
+}
+
+.filter-note {
+    color: #aaa;
+    font-size: 12px;
+    margin: 10px 0 0 0;
+    text-align: center;
+}
+
+/* No data section */
+.no-data-section .no-data-message {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background: rgba(243, 156, 18, 0.1);
+    border-radius: 6px;
+    border-left: 4px solid #f39c12;
+}
+
+.no-data-section .no-data-message i {
+    color: #f39c12;
+    font-size: 20px;
+}
+
+.no-data-section .no-data-message p {
+    margin: 0;
+    color: #f39c12;
+    font-weight: 500;
+}
+
+/* School section styling */
+.schools-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+.schools-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+}
+
+.schools-list li:last-child {
+    border-bottom: none;
+}
+
+.schools-list li strong {
+    margin-right: 10px;
+    color: #3498db;
+    min-width: 25px;
+}
+
+.school-count {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    color: #ddd;
+}
+
+.location-message {
+    background: rgba(52, 152, 219, 0.1);
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border-left: 4px solid #3498db;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.location-message i {
+    color: #3498db;
+    font-size: 18px;
+    margin-top: 2px;
+}
+
+.location-message p {
+    margin: 0;
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* School marker popup content in details */
+.school-info table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.school-info td {
+    padding: 8px 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.school-info td:first-child {
+    width: 40%;
+    font-weight: 600;
+    color: #4bc0c0;
+}
+
+.school-info td:last-child {
+    width: 60%;
+    color: #ddd;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .details-sidebar {
+        width: 30%;
+        min-width: 300px;
+        right: -30%;
+    }
+    
+    #map-container.details-open {
+        margin-right: 30%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .details-sidebar {
+        width: 35%;
+        min-width: 300px;
+        right: -35%;
+    }
+    
+    #map-container.details-open {
+        margin-right: 35%;
+    }
+}
+
+@media (max-width: 768px) {
+    .details-sidebar {
+        width: 100%;
+        min-width: 100%;
+        right: -100%;
+    }
+    
+    .details-header {
+        padding: 20px 15px;
+    }
+    
+    .details-content {
+        padding: 15px;
+    }
+    
+    #map-container.details-open {
+        margin-right: 0;
+    }
+}
+
+/* ============================================
+   IMPORT DATA BUTTON STYLING (Matching Insights)
+   ============================================ */
+
+.import-wrapper {
+    width: 100%;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+/* Hide the actual file input */
+.import-btn {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Style the label as the visible button */
+.import-label {
+    width: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    
+    /* Gradient background */
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    
+    /* 3D effect */
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.6),
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    
+    border: 2px solid rgba(75, 192, 192, 0.4);
+    min-height: 60px;
+}
+
+.import-label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(75, 192, 192, 0.1) 0%, 
+        rgba(153, 102, 255, 0.1) 50%, 
+        rgba(255, 99, 132, 0.1) 100%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.import-label:hover {
+    transform: translateY(-4px);
+    border-color: rgba(75, 192, 192, 0.8);
+    box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.7),
+        0 6px 12px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.import-label:hover::before {
+    opacity: 1;
+}
+
+.import-label:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Import icon */
+.import-label i {
+    font-size: 1.4em;
+    color: #4bc0c0;
+    margin-right: auto;
+    text-shadow: 0 0 15px rgba(75, 192, 192, 0.4);
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.import-label:hover i {
+    transform: scale(1.1);
+    color: #7bff7b;
+    text-shadow: 0 0 18px rgba(123, 255, 123, 0.6);
+}
+
+/* Import text */
+.import-text {
+    font-size: 1em;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Import status indicator */
+.import-status {
+    font-size: 0.8em;
+    font-weight: 500;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.25s ease;
+    margin-left: auto;
+    flex-shrink: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.import-status i {
+    font-size: 0.9em;
+    margin: 0;
+}
+
+/* Import hint text */
+.import-hint {
+    font-size: 0.8em;
+    color: #888;
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* SUCCESS STATE - Green styling */
+.import-label.success {
+    border-color: rgba(40, 167, 69, 0.6);
+    background: linear-gradient(145deg, #1a2a1a, #2a3a2a);
+    box-shadow: 
+        0 8px 20px rgba(40, 167, 69, 0.25),
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    padding: 14px 16px;
+}
+
+.import-label.success i {
+    color: #28a745;
+    text-shadow: 0 0 15px rgba(40, 167, 69, 0.4);
+}
+
+.import-label.success .import-text {
+    color: #7bff7b;
+    font-size: 0.95em;
+}
+
+.import-label.success .import-status {
+    color: #7bff7b;
+    font-size: 0.75em;
+    opacity: 1;
+    visibility: visible;
+}
+
+.import-label.success:hover {
+    border-color: rgba(40, 167, 69, 0.9);
+    box-shadow: 
+        0 12px 30px rgba(40, 167, 69, 0.35),
+        0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ERROR STATE - Red styling */
+.import-label.error {
+    border-color: rgba(220, 53, 69, 0.6);
+    background: linear-gradient(145deg, #2a1a1a, #3a2a2a);
+    box-shadow: 
+        0 8px 20px rgba(220, 53, 69, 0.25),
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    padding: 14px 16px;
+}
+
+.import-label.error i {
+    color: #dc3545;
+    text-shadow: 0 0 15px rgba(220, 53, 69, 0.4);
+}
+
+.import-label.error .import-text {
+    color: #ff7b7b;
+}
+
+.import-label.error .import-status {
+    color: #ff7b7b;
+    font-size: 0.75em;
+    opacity: 1;
+    visibility: visible;
+}
+
+.import-label.error:hover {
+    border-color: rgba(220, 53, 69, 0.9);
+    box-shadow: 
+        0 12px 30px rgba(220, 53, 69, 0.35),
+        0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Pulse animations */
+@keyframes pulseSuccess {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+@keyframes pulseError {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.import-label.success-pulse {
+    animation: pulseSuccess 1.5s;
+}
+
+.import-label.error-pulse {
+    animation: pulseError 1.5s;
+}
+
+/* Loading state */
+.import-label.loading i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Remove old import button styles that might conflict */
+.import-section .import-btn {
+    display: none; /* Hide the old button */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .import-label {
+        padding: 14px;
+        min-height: 55px;
+    }
+    
+    .import-label i {
+        font-size: 1.2em;
+    }
+    
+    .import-text {
+        font-size: 0.9em;
+    }
+    
+    .import-status {
+        font-size: 0.7em;
+    }
+}
+/* Hide Leaflet popups */
+.leaflet-popup {
+    display: none !important;
+}
+
+/* Ensure our details sidebar has higher z-index than map */
+.details-sidebar {
+    z-index: 1000;
+}
+
+#map {
+    z-index: 1;
+}
+
+/* ============================================
+   ACTION BUTTONS (INSIGHTS & RESET)
+   ============================================ */
+
+.action-buttons {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.action-btn {
+    padding: 16px 20px;
+    background: linear-gradient(145deg, #2d2d2d, #1f1f1f);
+    border: none;
+    border-radius: 16px;
+    color: #fff;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    
+    /* 3D effect matching other buttons */
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.8),
+        -5px -5px 15px rgba(80, 80, 80, 0.2),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.05),
+        inset -2px -2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.action-btn:hover {
+    transform: translateY(-4px);
+    
+    /* Enhanced 3D effect on hover */
+    box-shadow: 
+        8px 8px 20px rgba(0, 0, 0, 0.9),
+        -8px -8px 20px rgba(80, 80, 80, 0.3),
+        inset 3px 3px 8px rgba(255, 255, 255, 0.1),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.6);
+}
+
+.action-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        2px 2px 8px rgba(0, 0, 0, 0.7),
+        -2px -2px 8px rgba(80, 80, 80, 0.2),
+        inset 4px 4px 10px rgba(0, 0, 0, 0.6),
+        inset -4px -4px 10px rgba(255, 255, 255, 0.1);
+}
+
+.action-btn i {
+    font-size: 1.3em;
+    width: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover i {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* INSIGHTS button specific styling */
+.insights-btn {
+    background: linear-gradient(145deg, #2a4a2d, #1a3a1d);
+}
+
+.insights-btn i {
+    color: #7bff7b;
+}
+
+.insights-btn:hover {
+    color: #7bff7b;
+    background: linear-gradient(145deg, #2d4a30, #1f3d22);
+}
+
+/* RESET button specific styling */
+.reset-btn {
+    background: linear-gradient(145deg, #4a2a2a, #3a1a1a);
+}
+
+.reset-btn i {
+    color: #ff7b7b;
+}
+
+.reset-btn:hover {
+    color: #ff7b7b;
+    background: linear-gradient(145deg, #4d2d2d, #3f1f1f);
+}
+/* Add to both style.css and insights.css */
+.page-transition {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar-header {
+    position: relative;
+    height: 120px;                /* ⬅ increased from 90px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    pointer-events: none;         /* Prevent accidental clicks */
+}
+.sidebar-logo img {
+    max-width: 220px;             /* ⬅ larger logo */
+    max-height: 90px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transform: scale(1.25);
+}
+
+.toggle-btn {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
